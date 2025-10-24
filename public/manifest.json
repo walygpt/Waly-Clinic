@@ -1,0 +1,40 @@
+{
+  "name": "WALY CLINIC - العقل الإكلينيكي الرقمي",
+  "short_name": "WALY CLINIC",
+  "description": "تطبيق تشخيص طبي رقمي متطور يستخدم الذكاء الاصطناعي لتحليل الأعراض والبيانات الطبية",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#ffffff",
+  "theme_color": "#0369a1",
+  "icons": [
+    {
+      "src": "/waly-clinic-logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/waly-clinic-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/waly-clinic-logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "categories": ["medical", "health"],
+  "screenshots": [
+    {
+      "src": "/waly-clinic-logo.png",
+      "sizes": "540x720",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ]
+}
