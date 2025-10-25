@@ -21,6 +21,9 @@ export interface ConsultationCase {
     heartRate?: number
   }
   labResults?: string
+  medicalHistory?: string
+  medications?: string
+  allergies?: string
   geminOutput?: any
   modelOutput?: any
   diagnosis?: string
@@ -30,6 +33,17 @@ export interface ConsultationCase {
   notes?: string
   createdAt: string
   updatedAt: string
+  fullConsultationData?: {
+    inputs: {
+      symptoms: string
+      vitals?: any
+      medicalHistory?: string
+      medications?: string
+      allergies?: string
+      labResults?: string
+    }
+    output: any
+  }
 }
 
 const STORAGE_KEYS = {

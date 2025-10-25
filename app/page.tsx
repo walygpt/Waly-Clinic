@@ -110,7 +110,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <div className="flex-1">{content}</div>
+      <div className="flex-1 overflow-y-auto">{content}</div>
       <Footer />
     </div>
   )

@@ -20,35 +20,7 @@ export function ResultsDisplay({ result, consultationId, onNewConsultation }: Re
   const primaryDiagnosis = result.differential_diagnoses?.[0]
   const recommendations = result.treatment_recommendations || []
   const tests = result.recommended_tests || []
-  const warnings = result.warnings || []
-
-  const handleExportPDF = () => {
-    const content = `
-WALY CLINIC - ${t("results.exportReport", language)}
-=====================================
-
-${t("results.primaryDiagnosis", language)}: ${primaryDiagnosis?.condition}
-${t("results.confidence", language)}: ${Math.round((primaryDiagnosis?.confidence || 0) * 100)}%
-
-${t("cases.symptoms", language)}:
-${result.explainability}
-
-${t("results.treatmentRecommendations", language)}:
-${recommendations.map((r: any) => `- ${r.drug}: ${r.dose} ${r.route} ${t("results.duration", language)} ${r.duration}`).join("\n")}
-
-${t("results.recommendedTests", language)}:
-${tests.map((t: any) => `- ${t.test} (${t.priority})`).join("\n")}
-
-${t("results.disclaimer", language)}
-    `
-
-    const blob = new Blob([content], { type: "text/plain" })
-    const url = window.URL.createObjectURL(blob)
-    const a = document.createElement("a")
-    a.href = url
-    a.download = `consultation-${consultationId}.txt`
-    a.click()
-  }
+  const warnings = result.immediate_warnings || []
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
@@ -87,10 +59,10 @@ ${t("results.disclaimer", language)}
           </CardHeader>
           <CardContent>
             <ul className="space-y-2">
-              {warnings.map((warning: string, idx: number) => (
+              {warnings.map((warning: any, idx: number) => (
                 <li key={idx} className="flex items-start gap-3">
                   <span className="text-destructive font-bold mt-1">⚠</span>
-                  <span className="text-foreground">{warning}</span>
+                  <span className="text-foreground">{warning.text}</span>
                 </li>
               ))}
             </ul>
@@ -134,18 +106,14 @@ ${t("results.disclaimer", language)}
                 <div key={idx} className="flex items-start gap-3 pb-3 border-b border-border last:border-0">
                   <span
                     className={`px-2 py-1 rounded text-xs font-semibold whitespace-nowrap ${
-                      test.priority === "high"
+                      test.priority === "High"
                         ? "bg-destructive/10 text-destructive"
-                        : test.priority === "medium"
+                        : test.priority === "Medium"
                           ? "bg-yellow-500/10 text-yellow-700"
                           : "bg-green-500/10 text-green-700"
                     }`}
                   >
-                    {test.priority === "high"
-                      ? t("results.high", language)
-                      : test.priority === "medium"
-                        ? t("results.medium", language)
-                        : t("results.low", language)}
+                    {test.priority}
                   </span>
                   <span className="text-foreground">{test.test}</span>
                 </div>
@@ -156,33 +124,35 @@ ${t("results.disclaimer", language)}
       )}
 
       {/* Treatment Recommendations */}
-      {recommendations.length > 0 && (
+      {recommendations.drug_therapy && recommendations.drug_therapy.length > 0 && (
         <Card>
           <CardHeader>
             <CardTitle>{t("results.treatmentRecommendations", language)}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {recommendations.map((rec: any, idx: number) => (
+              {recommendations.drug_therapy.map((rec: any, idx: number) => (
                 <div key={idx} className="border border-border rounded-lg p-4">
-                  <h4 className="font-semibold text-foreground mb-2">{rec.drug}</h4>
+                  <h4 className="font-semibold text-foreground mb-2">{rec.drug_name}</h4>
                   <div className="grid grid-cols-2 gap-2 text-sm mb-3">
                     <div>
                       <span className="text-muted-foreground">{t("results.dose", language)}:</span>
                       <p className="font-semibold text-foreground">{rec.dose}</p>
                     </div>
                     <div>
-                      <span className="text-muted-foreground">{t("results.route", language)}:</span>
-                      <p className="font-semibold text-foreground">{rec.route}</p>
-                    </div>
-                    <div>
                       <span className="text-muted-foreground">{t("results.duration", language)}:</span>
                       <p className="font-semibold text-foreground">{rec.duration}</p>
                     </div>
                   </div>
-                  <p className="text-sm text-muted-foreground">{rec.rationale}</p>
+                  {rec.caveat && <p className="text-sm text-destructive font-semibold">{rec.caveat}</p>}
                 </div>
               ))}
+              {recommendations.lifestyle_advice && (
+                <div className="border border-border rounded-lg p-4 bg-blue-50 dark:bg-blue-950">
+                  <h4 className="font-semibold text-foreground mb-2">{t("results.lifestyleAdvice", language)}</h4>
+                  <p className="text-sm text-foreground">{recommendations.lifestyle_advice}</p>
+                </div>
+              )}
             </div>
           </CardContent>
         </Card>
@@ -241,9 +211,6 @@ ${t("results.disclaimer", language)}
           className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground py-6"
         >
           {t("results.newConsultation", language)}
-        </Button>
-        <Button onClick={handleExportPDF} variant="outline" className="flex-1 py-6 bg-transparent">
-          {t("results.exportReport", language)}
         </Button>
       </div>
 

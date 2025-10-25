@@ -1,7 +1,4 @@
 "use client"
-
-import { useState } from "react"
-import { storage } from "@/lib/storage"
 import { useLanguage } from "@/lib/language-context"
 import { t } from "@/lib/translations"
 import { Button } from "@/components/ui/button"
@@ -9,7 +6,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 
 export function SettingsPanel() {
   const { language } = useLanguage()
-  const [showConfirm, setShowConfirm] = useState(false)
 
   const handleClearData = () => {
     if (
@@ -24,24 +20,6 @@ export function SettingsPanel() {
     }
   }
 
-  const handleExportData = () => {
-    const patients = storage.getAllPatients()
-    const consultations = storage.getAllConsultations()
-
-    const data = {
-      patients,
-      consultations,
-      exportDate: new Date().toISOString(),
-    }
-
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" })
-    const url = window.URL.createObjectURL(blob)
-    const a = document.createElement("a")
-    a.href = url
-    a.download = `waly-clinic-backup-${new Date().toISOString().split("T")[0]}.json`
-    a.click()
-  }
-
   return (
     <div className="space-y-4">
       <Card>
@@ -50,9 +28,6 @@ export function SettingsPanel() {
           <CardDescription>{t("settings.manageData", language)}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <Button onClick={handleExportData} variant="outline" className="w-full bg-transparent">
-            {t("settings.exportData", language)}
-          </Button>
           <Button onClick={handleClearData} variant="destructive" className="w-full">
             {t("settings.clearData", language)}
           </Button>

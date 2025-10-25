@@ -122,8 +122,16 @@
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    /* Removed overflow: hidden to allow scrolling */
+    min-height: 100vh;
+  }
   body {
     @apply bg-background text-foreground;
+    /* Allow vertical scrolling with smooth iOS scrolling */
+    min-height: 100vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 }
 
