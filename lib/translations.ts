@@ -118,6 +118,18 @@ export const translations = {
     "footer.copyrightWarning":
       "يُمنع نسخ، إعادة تطوير، أو استخدام الفكرة أو النظام الأساسي بأي شكل دون إذن خطي من شركة WALY. يُعتبر أي انتهاك لذلك تعديًا على حقوق الملكية الفكرية يعاقب عليه القانون الدولي.",
 
+    // Quick Tips
+    "tips.title": "نصائح للحصول على أفضل النتائج",
+    "tips.subtitle": "اتبع هذه النصائح للحصول على تشخيص أكثر دقة",
+    "tips.symptoms.title": "وصف دقيق للأعراض",
+    "tips.symptoms.description": "اكتب أعراضك بالتفصيل - متى بدأت، كم مرة تحدث، هل تزداد سوءاً",
+    "tips.vitals.title": "البيانات الحيوية مهمة",
+    "tips.vitals.description": "درجة الحرارة وضغط الدم ونبضات القلب تساعد في التشخيص الدقيق",
+    "tips.history.title": "السجل الطبي",
+    "tips.history.description": "أخبرنا عن أي أمراض سابقة أو أدوية تتناولها حالياً",
+    "tips.allergies.title": "الحساسيات والتحذيرات",
+    "tips.allergies.description": "أخبرنا عن أي حساسيات من أدوية أو مواد معينة",
+
     // Common
     "common.loading": "جاري التحميل...",
     "common.required": "*",
@@ -241,6 +253,19 @@ export const translations = {
       "WALY CLINIC is an innovation fully owned by WALY Corporation. All intellectual property, technical, and conceptual rights of the application idea and its operation are legally protected.",
     "footer.copyrightWarning":
       "Copying, redevelopment, or use of the idea or platform in any form without written permission from WALY Corporation is prohibited. Any violation is considered an infringement of intellectual property rights punishable under international law.",
+
+    // Quick Tips
+    "tips.title": "Tips for Best Results",
+    "tips.subtitle": "Follow these tips for a more accurate diagnosis",
+    "tips.symptoms.title": "Accurate Symptom Description",
+    "tips.symptoms.description":
+      "Describe your symptoms in detail - when they started, how often they occur, whether they are getting worse",
+    "tips.vitals.title": "Vital Signs Matter",
+    "tips.vitals.description": "Temperature, blood pressure, and heart rate help in accurate diagnosis",
+    "tips.history.title": "Medical History",
+    "tips.history.description": "Tell us about any previous diseases or medications you are currently taking",
+    "tips.allergies.title": "Allergies and Warnings",
+    "tips.allergies.description": "Tell us about any allergies to medications or substances",
 
     // Common
     "common.loading": "Loading...",

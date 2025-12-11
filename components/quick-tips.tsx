@@ -1,32 +1,36 @@
 "use client"
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { useLanguage } from "@/lib/language-context"
+import { t } from "@/lib/translations"
 
 export function QuickTips() {
+  const { language } = useLanguage()
+
   const tips = [
     {
-      title: "وصف دقيق للأعراض",
-      description: "اكتب أعراضك بالتفصيل - متى بدأت، كم مرة تحدث، هل تزداد سوءاً",
+      title: t("tips.symptoms.title", language),
+      description: t("tips.symptoms.description", language),
     },
     {
-      title: "البيانات الحيوية مهمة",
-      description: "درجة الحرارة وضغط الدم ونبضات القلب تساعد في التشخيص الدقيق",
+      title: t("tips.vitals.title", language),
+      description: t("tips.vitals.description", language),
     },
     {
-      title: "السجل الطبي",
-      description: "أخبرنا عن أي أمراض سابقة أو أدوية تتناولها حالياً",
+      title: t("tips.history.title", language),
+      description: t("tips.history.description", language),
     },
     {
-      title: "الحساسيات والتحذيرات",
-      description: "أخبرنا عن أي حساسيات من أدوية أو مواد معينة",
+      title: t("tips.allergies.title", language),
+      description: t("tips.allergies.description", language),
     },
   ]
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>نصائح للحصول على أفضل النتائج</CardTitle>
-        <CardDescription>اتبع هذه النصائح للحصول على تشخيص أكثر دقة</CardDescription>
+        <CardTitle>{t("tips.title", language)}</CardTitle>
+        <CardDescription>{t("tips.subtitle", language)}</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
