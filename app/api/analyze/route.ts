@@ -2,7 +2,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai"
 import { type NextRequest, NextResponse } from "next/server"
 import { clinicalModel } from "@/lib/clinical-model"
 
-const genAI = new GoogleGenerativeAI("AIzaSyAL8aa-jEZpbxLV49fiHzXvzTxJG-TjB4k")
+const genAI = new GoogleGenerativeAI("AIzaSyCN_rPdJiIKYy3VQABSf9Xj4V0nHxLheJA")
 
 const APPS_SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbzeb-XbQoaIMKiKrjyJ-5dY0m-yPn21VRk1qMcYsmcTVsSi5jKjRZDit3yaIUh8ebXq-Q/exec"
