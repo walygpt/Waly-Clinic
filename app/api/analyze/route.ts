@@ -1,11 +1,14 @@
 import { GoogleGenerativeAI } from "@google/generative-ai"
 import { type NextRequest, NextResponse } from "next/server"
+// تأكد أن هذا الملف موجود في مساره الصحيح في مشروعك
 import { clinicalModel } from "@/lib/clinical-model"
 
-const genAI = new GoogleGenerativeAI("AIzaSyCN_rPdJiIKYy3VQABSf9Xj4V0nHxLheJA")
-
+// رابط جوجل شيتس (يفضل أيضاً وضعه في env لكن سأتركه هنا لعدم تعقيد الأمور حالياً)
 const APPS_SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbzeb-XbQoaIMKiKrjyJ-5dY0m-yPn21VRk1qMcYsmcTVsSi5jKjRZDit3yaIUh8ebXq-Q/exec"
+
+// اسم الموديل المحدث والمستقر
+const MODEL_NAME = "gemini-2.5-flash"
 
 async function logConsultationData(
   patientData: {
@@ -27,7 +30,7 @@ async function logConsultationData(
 
     const payload = {
       timestamp: new Date().toISOString(),
-      modelName: "gemini-2.5-flash",
+      modelName: MODEL_NAME,
       primaryDiagnosis,
       confidence,
       warnings,
@@ -60,6 +63,16 @@ async function logConsultationData(
 
 export async function POST(request: NextRequest) {
   try {
+    // 1. التحقق من وجود مفتاح الـ API في متغيرات البيئة
+    const apiKey = process.env.GEMINI_API_KEY
+    if (!apiKey) {
+      console.error("API Key is missing in environment variables")
+      return NextResponse.json(
+        { error: "Server Configuration Error: API Key Missing" },
+        { status: 500 }
+      )
+    }
+
     const { symptoms, vitals, labResults, medicalHistory, medications, allergies, gender, age } = await request.json()
 
     const prompt = `أنت مساعد استنتاج سريري رقمي متخصص باسم "WALY CLINIC". مهمتك الأساسية هي تقييم الأعراض والتاريخ الطبي للمريض، مع إعطاء الأولوية القصوى للسلامة الإكلينيكية والتحذير من حالات الطوارئ والتعارضات الدوائية قبل أي شيء آخر.
@@ -118,7 +131,10 @@ export async function POST(request: NextRequest) {
   "explainability": "شرح مبسط (150 كلمة كحد أقصى) لكيفية الوصول للتشخيص، مع الإشارة إلى أهم ثلاثة عوامل في بيانات المريض."
 }`
 
-    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" })
+    // تهيئة الـ API باستخدام المفتاح الآمن
+    const genAI = new GoogleGenerativeAI(apiKey)
+    const model = genAI.getGenerativeModel({ model: MODEL_NAME })
+    
     const result = await model.generateContent(prompt)
     const responseText = result.response.text()
 
@@ -136,6 +152,7 @@ export async function POST(request: NextRequest) {
 
     const { correctedResult, corrections } = clinicalModel.correctGeminiOutput(analysisResult, clinicalData)
 
+    // تسجيل البيانات في الخلفية
     logConsultationData(
       { symptoms, vitals, labResults, medicalHistory, medications, allergies, gender, age },
       correctedResult,
@@ -144,6 +161,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(correctedResult)
   } catch (error) {
     console.error("Error:", error)
-    return NextResponse.json({ error: "Failed to analyze" }, { status: 500 })
+    return NextResponse.json({ error: "Failed to analyze clinical data" }, { status: 500 })
   }
 }
